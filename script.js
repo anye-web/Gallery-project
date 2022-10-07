@@ -7,7 +7,7 @@ const galleryContent = document.querySelector(".gallery-content");
 // Contents dynamic Generated
 const items = [
   {
-    id: 3,
+    id: 1,
     category: "caves",
     img: [
       "../images/cave-1.jpg",
@@ -66,10 +66,10 @@ window.addEventListener("DOMContentLoaded", function () {
 // Creating Gallery Images
 function displayGalleryContent(galleryItems) {
   // Displaying Items in the Dom
-  let displayGallery = items
-    .map((item) => {
+  let displayGallery = galleryItems
+    .map((item, id) => {
       return `<div class=${item.category}>
-          <h3 class="title">1. ${item.category}</h3>
+          <h3 class="title">${item.id}. ${item.category}</h3>
           <div class="content">
           ${item.img
             .map((el) => {
@@ -106,21 +106,43 @@ function displayGalleryBtns() {
   // Displaying the btns in Ui
   let displayBtn = categories
     .map((category) => {
-      return `<button type="button" class="btn" data-id=${category}>${category}</button>`;
+      return `<button type="button" class="btn btn-filter" data-id=${category}>${category}</button>`;
     })
     .join("");
 
   btnContent.innerHTML = displayBtn;
 
   // Filtering the Btns
-  const btns = document.querySelectorAll(".btn");
+  const filterBtns = document.querySelectorAll(".btn-filter");
 
-  btns.forEach((btn) => {
+  filterBtns.forEach((btn) => {
     // Adding the Active class to the all btn onload
     if (btn.dataset.id === "all") {
       btn.classList.add("btn-active");
     }
 
-    btn.addEventListener("click");
+    btn.addEventListener("click", function (e) {
+      const id = e.currentTarget.dataset.id;
+
+      const itemsID = items.filter((item) => {
+        if (item.category === id) {
+          return item;
+        }
+      });
+
+      // Removing active class and putting on the the btn click
+      filterBtns.forEach((btn) => {
+        btn.classList.remove("btn-active");
+        if (btn.dataset.id === id) {
+          btn.classList.add("btn-active");
+        }
+      });
+
+      if (id === "all") {
+        displayGalleryContent(items);
+      } else {
+        displayGalleryContent(itemsID);
+      }
+    });
   });
 }
