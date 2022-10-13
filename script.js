@@ -3,6 +3,7 @@
 // UI Element
 const btnContent = document.querySelector(".btn-content");
 const galleryContent = document.querySelector(".gallery-content");
+const overlayContent = document.querySelector(".overlay-container");
 
 // Contents dynamic Generated
 const items = [
@@ -84,8 +85,28 @@ function displayGalleryContent(galleryItems) {
     .join("");
 
   galleryContent.innerHTML = displayGallery;
+
+  // Displaying overlay Gallery
+
+  // Adding Event listern to the images
+  function displayOverlay() {
+    const imgs = document.querySelectorAll(".img");
+
+    imgs.forEach((img) => {
+      img.addEventListener("click", function (e) {
+        const itemCategory =
+          e.currentTarget.parentElement.parentElement.parentElement.className;
+
+        const itemClick = galleryItems.find(
+          (item) => item.category === itemCategory
+        );
+
+        creatOverlay(itemClick);
+      });
+    });
+  }
+  displayOverlay();
 }
-console.log(items);
 
 // Creating Buttons
 function displayGalleryBtns() {
@@ -145,4 +166,98 @@ function displayGalleryBtns() {
       }
     });
   });
+}
+
+// Creating Overlay
+function creatOverlay(item) {
+  const itemImgs = item.img;
+
+  // Building the overlay items
+  const content = `
+  <!-- Close btn -->
+ <div class="container">
+       <button class="btn overlay-btn">x</button>
+        <!-- slide container -->
+        <div class="overlay-slider">
+          ${itemImgs
+            .map((el) => {
+              return ` <div class="slide">
+              <img src=${el} class="slide-img" alt="" />
+            </div>`;
+            })
+            .join("")}
+          <!-- Slide Controls -->
+          <button class="prev controls" type="button">
+            <ion-icon name="arrow-back-outline"></ion-icon>
+          </button>
+          <!-- Slide Controls -->
+          <button class="next controls" type="button">
+            <ion-icon name="arrow-forward-outline"></ion-icon>
+          </button>
+        </div>
+        <!-- Slides Dots -->
+        <div class="slide-dots">
+          ${itemImgs
+            .map((el) => {
+              return `<div class="dots">&nbsp;</div>`;
+            })
+            .join("")}
+        </div>
+       </div>
+  `;
+
+  overlayContent.innerHTML = content;
+  overlayContent.classList.add("show-overlay");
+
+  // Selcting Element Items
+  function hideOverlay() {
+    const closedOverlay = document.querySelector(".overlay-btn");
+
+    closedOverlay.addEventListener("click", function () {
+      overlayContent.classList.remove("show-overlay");
+    });
+  }
+  hideOverlay();
+  // creating slider
+  function slider() {
+    const slides = document.querySelectorAll(".slide");
+    const nextBtn = document.querySelector(".next");
+    const prevBtn = document.querySelector(".prev");
+
+    slides.forEach((slide, index) => {
+      slide.style.left = `${index * 100}%`;
+    });
+
+    let counter = 0;
+
+    nextBtn.addEventListener("click", function () {
+      counter++;
+      carousel();
+    });
+
+    prevBtn.addEventListener("click", function () {
+      counter--;
+      carousel();
+    });
+
+    function carousel() {
+      if (counter < slides.length - 1) {
+        nextBtn.style.display = "inline-block";
+      } else {
+        nextBtn.style.display = "none";
+      }
+
+      if (counter > 0) {
+        prevBtn.style.display = "inline-block";
+      } else {
+        prevBtn.style.display = "none";
+      }
+
+      slides.forEach((slide) => {
+        slide.style.transform = `translateX(-${counter * 100}%)`;
+      });
+    }
+    prevBtn.style.display = "none";
+  }
+  slider();
 }
