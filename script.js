@@ -97,6 +97,7 @@ function displayGalleryContent(galleryItems) {
         const itemCategory =
           e.currentTarget.parentElement.parentElement.parentElement.className;
 
+        // getting the parent class of the item click
         const itemClick = galleryItems.find(
           (item) => item.category === itemCategory
         );
@@ -198,8 +199,8 @@ function creatOverlay(item) {
         <!-- Slides Dots -->
         <div class="slide-dots">
           ${itemImgs
-            .map((el) => {
-              return `<div class="dots">&nbsp;</div>`;
+            .map((el, i) => {
+              return `<div class="dots" data-id=${i}>&nbsp;</div>`;
             })
             .join("")}
         </div>
@@ -224,6 +225,9 @@ function creatOverlay(item) {
     const nextBtn = document.querySelector(".next");
     const prevBtn = document.querySelector(".prev");
 
+    const dots = document.querySelectorAll(".dots");
+    const dotsContainer = document.querySelector(".slide-dots");
+
     slides.forEach((slide, index) => {
       slide.style.left = `${index * 100}%`;
     });
@@ -233,11 +237,13 @@ function creatOverlay(item) {
     nextBtn.addEventListener("click", function () {
       counter++;
       carousel();
+      activateDots(counter);
     });
 
     prevBtn.addEventListener("click", function () {
       counter--;
       carousel();
+      activateDots(counter);
     });
 
     function carousel() {
@@ -258,6 +264,35 @@ function creatOverlay(item) {
       });
     }
     prevBtn.style.display = "none";
+
+    // Activate Dots
+    function activateDots(slide) {
+      dots.forEach((dot) => {
+        dot.classList.remove("active-dot");
+      });
+
+      document
+        .querySelector(`.dots[data-id="${slide}"]`)
+        .classList.add("active-dot");
+    }
+
+    // moving to a slide on dot click
+    function moveToDot() {
+      dotsContainer.addEventListener("click", function (e) {
+        const { id } = e.target.dataset;
+        counter = id;
+        carousel();
+        activateDots(counter);
+      });
+    }
+    moveToDot();
+
+    // Initailising
+    function init() {
+      activateDots(0);
+    }
+
+    init();
   }
   slider();
 }
