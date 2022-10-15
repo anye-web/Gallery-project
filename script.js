@@ -21,7 +21,7 @@ const items = [
   },
   {
     id: 2,
-    category: "rivers",
+    category: "mountains",
     img: [
       "./images/river-1.jpg",
       "./images/river-2.jpg",
@@ -33,7 +33,7 @@ const items = [
   },
   {
     id: 3,
-    category: "mountains",
+    category: "rivers",
     img: [
       "./images/mount-1.jpg",
       "./images/mount-2.jpg",
