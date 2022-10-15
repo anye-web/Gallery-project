@@ -1,6 +1,6 @@
 # Awesome Gallery Project
 
-![alt text](http://url/images/Awesome-Gallery.png)
+![alt text](images/Awesome-Gallery.png)
 
 # Functionality
 
