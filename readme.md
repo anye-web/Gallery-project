@@ -9,4 +9,4 @@
 - User is able to see all images in a particular catergory at large scale.
 - User is able to see progres.
 
-^ Thank you for any contribution or improvement you would like add
+^ Thank you for any contribution or improvement you would like add 😇
