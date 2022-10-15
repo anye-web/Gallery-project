@@ -90,6 +90,7 @@ img {
 .btn-content {
   display: flex;
   gap: 2rem;
+  flex-wrap: wrap;
 }
 
 .btn {
@@ -229,4 +230,13 @@ img {
 
 .active-dot {
   background: var(--green-clr);
+}
+
+@media only screen and (max-width: 37.5em) {
+  html {
+    font-size: 50%;
+  }
+  .content {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }

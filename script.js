@@ -94,15 +94,52 @@ function displayGalleryContent(galleryItems) {
 
     imgs.forEach((img) => {
       img.addEventListener("click", function (e) {
-        const itemCategory =
-          e.currentTarget.parentElement.parentElement.parentElement.className;
-
+        // Option 1. displaying all the images inorder
+        // const itemCategory =
+        //   e.currentTarget.parentElement.parentElement.parentElement.className;
         // getting the parent class of the item click
-        const itemClick = galleryItems.find(
-          (item) => item.category === itemCategory
-        );
+        // const itemClick = galleryItems.find(
+        //   (item) => item.category === itemCategory
+        // );
+        // creatOverlay(itemClick);
 
-        creatOverlay(itemClick);
+        // Option  2. getting the element click and displaying it first
+        const firstEl = e.currentTarget.parentElement;
+
+        let getSibling = function (el) {
+          // Collecting for Siblings
+          let siblings = [];
+
+          // if no parent return no siblings
+          if (!el.parentNode) {
+            return siblings;
+          }
+
+          // first child of the parent node
+          let sibling = el.parentNode.firstChild;
+
+          // Collecting siblings
+          while (sibling) {
+            if (sibling.nodeType === 1 && sibling !== el) {
+              siblings.push(sibling);
+            }
+
+            sibling = sibling.nextElementSibling;
+          }
+
+          return siblings;
+        };
+
+        let imgsArr = [];
+        // Adding the siblings and the element click unto the an
+        const allEl = [firstEl, ...getSibling(firstEl)].forEach((el) => {
+          imgsArr.push(el.firstElementChild.src);
+        });
+        creatOverlay(imgsArr);
+
+        // Getting the child element and then it's image src
+
+        // console.log(arry);
       });
     });
   }
@@ -171,7 +208,8 @@ function displayGalleryBtns() {
 
 // Creating Overlay
 function creatOverlay(item) {
-  const itemImgs = item.img;
+  // option 1
+  // const itemImgs = item.img;
 
   // Building the overlay items
   const content = `
@@ -180,7 +218,7 @@ function creatOverlay(item) {
        <button class="btn overlay-btn">x</button>
         <!-- slide container -->
         <div class="overlay-slider">
-          ${itemImgs
+          ${item
             .map((el) => {
               return ` <div class="slide">
               <img src=${el} class="slide-img" alt="" />
@@ -198,7 +236,7 @@ function creatOverlay(item) {
         </div>
         <!-- Slides Dots -->
         <div class="slide-dots">
-          ${itemImgs
+          ${item
             .map((el, i) => {
               return `<div class="dots" data-id=${i}>&nbsp;</div>`;
             })
