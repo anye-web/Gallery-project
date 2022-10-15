@@ -239,6 +239,6 @@ img {
   .content {
     grid-template-columns: repeat(2, 1fr);
   }
-  .overlay-slider{
+  .slide-img{
     padding: 2rem 4rem;
 }
